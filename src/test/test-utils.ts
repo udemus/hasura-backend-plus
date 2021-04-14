@@ -4,9 +4,6 @@ import request, { SuperTest, Test } from 'supertest'
 import { APPLICATION, REGISTRATION } from '@shared/config'
 import { generateRandomString, selectAccountByEmail } from '@shared/helpers'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-console.error = function (): void {} // Disable the errors that will be raised by the tests
-
 interface MailhogEmailAddress {
   Relays: string | null
   Mailbox: string

@@ -1,13 +1,11 @@
 version: '3.6'
 services:
   hasura-backend-plus:
-    command: yarn run test
+    command: jest --coverage --forceExit --runInBand
     build:
       context: .
       dockerfile: Dockerfile.dev
     env_file: '.env.test'
-    depends_on:
-      - 'mailhog'
     environment:
       NODE_ENV: test
       JWT_ALGORITHM: HS256

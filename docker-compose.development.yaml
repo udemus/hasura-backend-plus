@@ -5,8 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     env_file: '.env.development'
-    depends_on:
-      - 'mailhog'
     environment:
       NODE_ENV: development
       JWT_ALGORITHM: HS256
