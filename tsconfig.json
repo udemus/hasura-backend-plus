@@ -17,6 +17,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "resolveJsonModule": false
+    "resolveJsonModule": false,
+    "typeRoots": ["node_modules/@types"]
   }
 }
