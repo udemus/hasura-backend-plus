@@ -53,7 +53,7 @@ export interface UserData {
   [key: string]: ClaimValueType
   id: string
   email?: string
-  display_name: string
+  name: string
   avatar_url?: string
 }
 

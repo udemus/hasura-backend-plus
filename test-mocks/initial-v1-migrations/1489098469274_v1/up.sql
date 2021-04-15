@@ -49,7 +49,7 @@ CREATE TABLE public.users (
   id uuid DEFAULT public.gen_random_uuid() NOT NULL PRIMARY KEY,
   created_at timestamp with time zone DEFAULT now() NOT NULL,
   updated_at timestamp with time zone DEFAULT now() NOT NULL,
-  display_name text NOT NULL,
+  name text NOT NULL,
   active boolean DEFAULT false NOT NULL,
   default_role text DEFAULT 'user'::text NOT NULL,
   avatar_url text,

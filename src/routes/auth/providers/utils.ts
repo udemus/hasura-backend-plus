@@ -43,7 +43,7 @@ const manageProviderStrategy = (
 
   // find or create the user
   // check if user exists, using profile.id
-  const { id, email, display_name, avatar_url } = transformProfile(profile)
+  const { id, email, name, avatar_url } = transformProfile(profile)
 
   const hasuraData = await request<QueryAccountProviderData>(selectAccountProvider, {
     provider,
@@ -92,7 +92,7 @@ const manageProviderStrategy = (
     account_roles: {
       data: REGISTRATION.DEFAULT_ALLOWED_USER_ROLES.map((role) => ({ role }))
     },
-    user: { data: { display_name: display_name || email, avatar_url } },
+    user: { data: { name: name || email, avatar_url } },
     account_providers: {
       data: [
         {
@@ -140,7 +140,7 @@ export const initProvider = <T extends Strategy>(
     transformProfile = ({ id, emails, displayName, photos }: Profile): UserData => ({
       id,
       email: emails?.[0].value,
-      display_name: displayName,
+      name: displayName,
       avatar_url: photos?.[0].value
     }),
     callbackMethod = 'GET',

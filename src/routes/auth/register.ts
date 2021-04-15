@@ -63,7 +63,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
           data: accountRoles
         },
         user: {
-          data: { display_name: email, ...user_data }
+          data: { name: email, email, ...user_data }
         }
       }
     })
@@ -76,7 +76,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
   const account = accounts.insert_auth_accounts.returning[0]
   const user: UserData = {
     id: account.user.id,
-    display_name: account.user.display_name,
+    name: account.user.name,
     email: account.email,
     avatar_url: account.user.avatar_url
   }
@@ -87,7 +87,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
     }
 
     // use display name from `user_data` if available
-    const display_name = 'display_name' in user_data ? user_data.display_name : email
+    const name = 'name' in user_data ? user_data.name : email
 
     try {
       await emailClient.send({
@@ -102,7 +102,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
           }
         },
         locals: {
-          display_name,
+          name,
           ticket,
           url: APPLICATION.SERVER_URL
         }

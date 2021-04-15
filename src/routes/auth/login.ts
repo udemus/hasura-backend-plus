@@ -42,7 +42,7 @@ async function loginAccount({ body, headers }: Request, res: Response): Promise<
               data: [{ role: REGISTRATION.DEFAULT_ANONYMOUS_ROLE }]
             },
             user: {
-              data: { display_name: 'Anonymous user' }
+              data: { name: 'Anonymous user' }
             }
           }
         })
@@ -112,7 +112,7 @@ async function loginAccount({ body, headers }: Request, res: Response): Promise<
   const jwt_expires_in = newJwtExpiry
   const user: UserData = {
     id: account.user.id,
-    display_name: account.user.display_name,
+    name: account.user.name,
     email: account.email,
     avatar_url: account.user.avatar_url
   }

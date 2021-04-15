@@ -42,10 +42,10 @@ async function requestChangeEmail(req: RequestExtended, res: Response): Promise<
     return Boom.badImplementation('Unable to set new ticket')
   }
   // set new email
-  let display_name
+  let name
   try {
     const setNewEmailReturn = await request<SetNewEmailData>(setNewEmail, { user_id, new_email })
-    display_name = setNewEmailReturn.update_auth_accounts.returning[0].user.display_name
+    name = setNewEmailReturn.update_auth_accounts.returning[0].user.name
   } catch (error) {
     console.error(error)
     throw Boom.badImplementation('unable to set new email')
@@ -57,7 +57,7 @@ async function requestChangeEmail(req: RequestExtended, res: Response): Promise<
       locals: {
         ticket,
         url: APPLICATION.SERVER_URL,
-        display_name
+        name
       },
       message: {
         to: new_email,

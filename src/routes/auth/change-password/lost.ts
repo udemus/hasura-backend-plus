@@ -64,7 +64,7 @@ async function requestChangePassword({ body }: Request, res: Response): Promise<
       locals: {
         ticket,
         url: APPLICATION.SERVER_URL,
-        display_name: account.user.display_name
+        name: account.user.name
       },
       message: {
         to: email,

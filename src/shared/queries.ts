@@ -11,7 +11,7 @@ const accountFragment = gql`
     }
     user {
       id
-      display_name
+      name
       ${JWT.CUSTOM_FIELDS.join('\n\t\t\t')}
     }
     is_anonymous
@@ -262,7 +262,7 @@ export const setNewEmail = gql`
     ) {
       returning {
         user {
-          display_name
+          name
         }
       }
       affected_rows
