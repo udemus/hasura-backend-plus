@@ -1,21 +1,20 @@
-import express, { RequestHandler, Response, Router } from 'express'
-import passport, { Profile } from 'passport'
-import { VerifyCallback } from 'passport-oauth2'
-import { Strategy } from 'passport'
+import express, {RequestHandler, Response, Router} from 'express'
+import passport, {Profile, Strategy} from 'passport'
+import {VerifyCallback} from 'passport-oauth2'
 
-import { PROVIDERS, APPLICATION, REGISTRATION} from '@shared/config'
-import { insertAccount, insertAccountProviderToUser, selectAccountProvider } from '@shared/queries'
-import { selectAccountByEmail } from '@shared/helpers'
-import { request } from '@shared/request'
+import {APPLICATION, PROVIDERS, REGISTRATION} from '@shared/config'
+import {insertAccount, insertAccountProviderToUser, selectAccountProvider} from '@shared/queries'
+import {selectAccountByEmail} from '@shared/helpers'
+import {request} from '@shared/request'
 import {
-  InsertAccountData,
-  QueryAccountProviderData,
   AccountData,
-  UserData,
+  InsertAccountData,
+  InsertAccountProviderToUser,
+  QueryAccountProviderData,
   RequestExtended,
-  InsertAccountProviderToUser
+  UserData
 } from '@shared/types'
-import { setRefreshToken } from '@shared/cookies'
+import {setRefreshToken} from '@shared/cookies'
 
 interface Constructable<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +28,7 @@ interface InitProviderSettings {
   callbackMethod: 'GET' | 'POST'
 }
 
-const manageProviderStrategy = (
+export const manageProviderStrategy = (
   provider: string,
   transformProfile: TransformProfileFunction
 ) => async (
@@ -92,7 +91,7 @@ const manageProviderStrategy = (
     account_roles: {
       data: REGISTRATION.DEFAULT_ALLOWED_USER_ROLES.map((role) => ({ role }))
     },
-    user: { data: { name: name || email, avatar_url } },
+    user: { data: { name: name || email, avatar_url, email, username: email?.split('@')[0] } },
     account_providers: {
       data: [
         {
