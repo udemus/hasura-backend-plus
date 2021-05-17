@@ -1,7 +1,6 @@
 import { NextFunction, Response } from 'express'
 import { PathConfig, createContext, getKey, hasPermission } from './utils'
 
-import Boom from '@hapi/boom'
 import { STORAGE } from '@shared/config'
 import archiver from 'archiver'
 import { s3 } from '@shared/s3'
@@ -17,10 +16,10 @@ export const listFile = async (
   const key = getKey(req)
   const context = createContext(req)
   if (!hasPermission([rules.list, rules.read], context)) {
-    throw Boom.forbidden()
+    return res.boom.forbidden()
   }
   const params = {
-    Bucket: STORAGE.S3_BUCKET as string,
+    Bucket: STORAGE.S3_BUCKET,
     Prefix: key.slice(0, -1)
   }
   const list = await s3.listObjectsV2(params).promise()

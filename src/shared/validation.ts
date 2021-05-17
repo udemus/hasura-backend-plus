@@ -36,11 +36,17 @@ const extendedJoi: ExtendedJoi = Joi.extend((joi) => ({
   }
 }))
 
-const passwordRule = Joi.string().min(REGISTRATION.MIN_PASSWORD_LENGTH).max(128).required()
+const passwordRule = Joi.string().min(REGISTRATION.MIN_PASSWORD_LENGTH).max(128);
+const passwordRuleRequired = passwordRule.required();
 
 const emailRule = extendedJoi.string().email().required().allowedDomains()
 
 const accountFields = {
+  email: emailRule,
+  password: passwordRuleRequired
+}
+
+const accountFieldsMagicLink = {
   email: emailRule,
   password: passwordRule
 }
@@ -73,6 +79,13 @@ export const registerSchema = Joi.object({
   cookie: Joi.boolean()
 })
 
+export const registerSchemaMagicLink = Joi.object({
+  ...accountFieldsMagicLink,
+  ...userDataFields,
+  cookie: Joi.boolean()
+})
+
+
 export const registerUserDataSchema = Joi.object(userDataFields)
 
 const ticketFields = {
@@ -104,12 +117,21 @@ export const logoutSchema = Joi.object({
 export const mfaSchema = Joi.object(codeFields)
 export const loginAnonymouslySchema = Joi.object({
   anonymous: Joi.boolean(),
-  email: Joi.string(), // these will be checked more regeriously in `loginSchema`
-  password: Joi.string() // these will be checked more regeriously in `loginSchema`
+  email: Joi.string(), // these will be checked more rigorously in `loginSchema`
+  password: Joi.string() // these will be checked more rigorously in `loginSchema`
+})
+export const magicLinkLoginAnonymouslySchema = Joi.object({
+  anonymous: Joi.boolean(),
+  email: Joi.string(), // these will be checked more rigorously in `loginSchema`
 })
 export const loginSchema = extendedJoi.object({
   email: emailRule,
   password: Joi.string().required(),
+  cookie: Joi.boolean()
+})
+export const loginSchemaMagicLink = extendedJoi.object({
+  email: emailRule,
+  password: Joi.string(),
   cookie: Joi.boolean()
 })
 export const forgotSchema = Joi.object({ email: emailRule })
@@ -133,3 +155,9 @@ export const fileMetadataUpdate = Joi.object({
   // action: Joi.string().valid('revoke-token','some-other-action').required(),
   action: Joi.string().valid('revoke-token').required()
 })
+
+export const magicLinkQuery = Joi.object({
+  token: Joi.string().required(),
+  action: Joi.string().valid('log-in', 'sign-up').required(),
+  cookie: Joi.boolean().optional(),
+});

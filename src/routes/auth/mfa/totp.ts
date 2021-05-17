@@ -1,19 +1,18 @@
-import {Request, Response} from 'express'
-import {asyncWrapper, rotateTicket, selectAccount} from '@shared/helpers'
-import {createHasuraJwt, newJwtExpiry} from '@shared/jwt'
-import {setRefreshToken} from '@shared/cookies'
-import {Session, UserData} from '@shared/types'
+import { Request, Response } from 'express'
+import { asyncWrapper, rotateTicket, selectAccount } from '@shared/helpers'
+import { newJwtExpiry, createHasuraJwt } from '@shared/jwt'
+import { setRefreshToken } from '@shared/cookies'
+import { UserData, Session } from '@shared/types'
 
-import Boom from '@hapi/boom'
-import {authenticator} from 'otplib'
-import {totpSchema} from '@shared/validation'
+import { authenticator } from 'otplib'
+import { totpSchema } from '@shared/validation'
 
 // Increase the authenticator window so that TOTP codes from the previous 30 seconds are also valid
 authenticator.options = {
   window: [1, 0]
 }
 
-async function totpLogin({ body }: Request, res: Response): Promise<void> {
+async function totpLogin({ body }: Request, res: Response): Promise<any> {
   const { ticket, code } = await totpSchema.validateAsync(body)
   const account = await selectAccount(body)
 
@@ -21,25 +20,25 @@ async function totpLogin({ body }: Request, res: Response): Promise<void> {
   const useCookie = typeof body.cookie !== 'undefined' ? body.cookie : true
 
   if (!account) {
-    throw Boom.unauthorized('Invalid or expired ticket.')
+    return res.boom.unauthorized('Invalid or expired ticket.')
   }
 
   const { id, otp_secret, mfa_enabled, active } = account
 
   if (!mfa_enabled) {
-    throw Boom.badRequest('MFA is not enabled.')
+    return res.boom.badRequest('MFA is not enabled.')
   }
 
   if (!active) {
-    throw Boom.badRequest('Account is not activated.')
+    return res.boom.badRequest('Account is not activated.')
   }
 
   if (!otp_secret) {
-    throw Boom.badRequest('OTP secret is not set.')
+    return res.boom.badRequest('OTP secret is not set.')
   }
 
   if (!authenticator.check(code, otp_secret)) {
-    throw Boom.unauthorized('Invalid two-factor code.')
+    return res.boom.unauthorized('Invalid two-factor code.')
   }
 
   const refresh_token = await setRefreshToken(res, id, useCookie)

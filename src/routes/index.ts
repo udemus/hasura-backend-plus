@@ -1,9 +1,11 @@
 import { Router } from 'express'
 import auth from './auth'
 import storage from './storage'
-import Boom from '@hapi/boom'
+import boom = require('express-boom')
 
 const router = Router()
+
+router.use(boom())
 
 router.use('/auth', auth)
 
@@ -17,7 +19,7 @@ router.get('/version', (_req, res) =>
 // THIS ENDPOINT IS ONLY TO BE USED FOR TESTS!!
 // It allows us to programmatically enable/disable
 // functionality needed for specific tests.
-if(process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV !== 'production') {
   router.post('/change-env', (req, res) => {
     Object.assign(process.env, req.body)
     res.json(req.body)
@@ -25,8 +27,8 @@ if(process.env.NODE_ENV === 'test') {
 }
 
 // all other routes should throw 404 not found
-router.use('*', () => {
-  throw Boom.notFound()
+router.use('*', (rwq, res) => {
+  return res.boom.notFound()
 })
 
 export default router

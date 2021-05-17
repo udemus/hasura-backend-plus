@@ -1,21 +1,20 @@
-import {asyncWrapper} from '@shared/helpers'
-import {Response} from 'express'
-import {selectRefreshToken, updateRefreshToken} from '@shared/queries'
+import { asyncWrapper } from '@shared/helpers'
+import { Response } from 'express'
+import { selectRefreshToken, updateRefreshToken } from '@shared/queries'
 
-import Boom from '@hapi/boom'
-import {createHasuraJwt, generatePermissionVariables, newJwtExpiry} from '@shared/jwt'
-import {newRefreshExpiry, setCookie} from '@shared/cookies'
-import {request} from '@shared/request'
-import {v4 as uuidv4} from 'uuid'
-import {AccountData, RequestExtended, Session, UserData} from '@shared/types'
+import { newJwtExpiry, createHasuraJwt, generatePermissionVariables } from '@shared/jwt'
+import { newRefreshExpiry, setCookie } from '@shared/cookies'
+import { request } from '@shared/request'
+import { v4 as uuidv4 } from 'uuid'
+import { AccountData, UserData, Session, RequestExtended } from '@shared/types'
 
 interface HasuraData {
   auth_refresh_tokens: { account: AccountData }[]
 }
 
-async function refreshToken({ refresh_token }: RequestExtended, res: Response): Promise<void> {
+async function refreshToken({ refresh_token }: RequestExtended, res: Response): Promise<any> {
   if (!refresh_token || !refresh_token.value) {
-    throw Boom.unauthorized('Invalid or expired refresh token.')
+    return res.boom.unauthorized('Invalid or expired refresh token.')
   }
 
   // get account based on refresh token
@@ -25,7 +24,7 @@ async function refreshToken({ refresh_token }: RequestExtended, res: Response): 
   })
 
   if (!auth_refresh_tokens?.length) {
-    throw Boom.unauthorized('Invalid or expired refresh token.')
+    return res.boom.unauthorized('Invalid or expired refresh token.')
   }
 
   // create a new refresh token
@@ -44,7 +43,7 @@ async function refreshToken({ refresh_token }: RequestExtended, res: Response): 
       }
     })
   } catch (error) {
-    throw Boom.badImplementation('Unable to set new refresh token')
+    return res.boom.badImplementation('Unable to set new refresh token')
   }
 
   const permission_variables = JSON.stringify(generatePermissionVariables(account))
