@@ -1,12 +1,12 @@
-import { Request, Response } from 'express'
-import { asyncWrapper, rotateTicket, selectAccount } from '@shared/helpers'
-import { newJwtExpiry, createHasuraJwt } from '@shared/jwt'
-import { setRefreshToken } from '@shared/cookies'
-import { UserData, Session } from '@shared/types'
+import {Request, Response} from 'express'
+import {asyncWrapper, rotateTicket, selectAccount} from '@shared/helpers'
+import {createHasuraJwt, newJwtExpiry} from '@shared/jwt'
+import {setRefreshToken} from '@shared/cookies'
+import {Session, UserData} from '@shared/types'
 
 import Boom from '@hapi/boom'
-import { authenticator } from 'otplib'
-import { totpSchema } from '@shared/validation'
+import {authenticator} from 'otplib'
+import {totpSchema} from '@shared/validation'
 
 // Increase the authenticator window so that TOTP codes from the previous 30 seconds are also valid
 authenticator.options = {
@@ -48,9 +48,7 @@ async function totpLogin({ body }: Request, res: Response): Promise<void> {
   const jwt_expires_in = newJwtExpiry
   const user: UserData = {
     id: account.user.id,
-    name: account.user.name,
     email: account.email,
-    avatar_url: account.user.avatar_url
   }
 
   const session: Session = { jwt_token, jwt_expires_in, user }

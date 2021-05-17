@@ -138,7 +138,7 @@ export const initProvider = <T extends Strategy>(
   const {
     transformProfile = ({ id, emails, displayName, photos }: Profile): UserData => ({
       id,
-      email: emails?.[0].value,
+      email: emails?.[0].value ?? '',
       name: displayName,
       avatar_url: photos?.[0].value
     }),

@@ -1,15 +1,15 @@
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import Boom from '@hapi/boom'
 import bcrypt from 'bcryptjs'
-import { v4 as uuidv4 } from 'uuid'
-import { asyncWrapper, selectAccount } from '@shared/helpers'
-import { newJwtExpiry, createHasuraJwt } from '@shared/jwt'
-import { setRefreshToken } from '@shared/cookies'
-import { loginAnonymouslySchema, loginSchema } from '@shared/validation'
-import { insertAccount } from '@shared/queries'
-import { request } from '@shared/request'
-import { AccountData, UserData, Session } from '@shared/types'
-import { AUTHENTICATION, APPLICATION, REGISTRATION, HEADERS } from '@shared/config'
+import {v4 as uuidv4} from 'uuid'
+import {asyncWrapper, selectAccount} from '@shared/helpers'
+import {createHasuraJwt, newJwtExpiry} from '@shared/jwt'
+import {setRefreshToken} from '@shared/cookies'
+import {loginAnonymouslySchema, loginSchema} from '@shared/validation'
+import {insertAccount} from '@shared/queries'
+import {request} from '@shared/request'
+import {AccountData, Session, UserData} from '@shared/types'
+import {APPLICATION, AUTHENTICATION, HEADERS, REGISTRATION} from '@shared/config'
 
 interface HasuraData {
   insert_auth_accounts: {
@@ -112,9 +112,7 @@ async function loginAccount({ body, headers }: Request, res: Response): Promise<
   const jwt_expires_in = newJwtExpiry
   const user: UserData = {
     id: account.user.id,
-    name: account.user.name,
     email: account.email,
-    avatar_url: account.user.avatar_url
   }
   const session: Session = { jwt_token, jwt_expires_in, user }
   if (!useCookie) session.refresh_token = refresh_token

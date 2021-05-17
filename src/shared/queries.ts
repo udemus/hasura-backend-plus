@@ -11,7 +11,6 @@ const accountFragment = gql`
     }
     user {
       id
-      name
       ${JWT.CUSTOM_FIELDS.join('\n\t\t\t')}
     }
     is_anonymous

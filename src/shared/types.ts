@@ -1,4 +1,4 @@
-import { Request } from 'express'
+import {Request} from 'express'
 
 export type ClaimValueType =
   | string
@@ -52,8 +52,8 @@ export interface Session {
 export interface UserData {
   [key: string]: ClaimValueType
   id: string
-  email?: string
-  name: string
+  email: string
+  name?: string
   avatar_url?: string
 }
 

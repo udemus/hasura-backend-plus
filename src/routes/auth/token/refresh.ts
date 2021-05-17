@@ -1,13 +1,13 @@
-import { asyncWrapper } from '@shared/helpers'
-import { Response } from 'express'
-import { selectRefreshToken, updateRefreshToken } from '@shared/queries'
+import {asyncWrapper} from '@shared/helpers'
+import {Response} from 'express'
+import {selectRefreshToken, updateRefreshToken} from '@shared/queries'
 
 import Boom from '@hapi/boom'
-import { newJwtExpiry, createHasuraJwt, generatePermissionVariables } from '@shared/jwt'
-import { newRefreshExpiry, setCookie } from '@shared/cookies'
-import { request } from '@shared/request'
-import { v4 as uuidv4 } from 'uuid'
-import { AccountData, UserData, Session, RequestExtended } from '@shared/types'
+import {createHasuraJwt, generatePermissionVariables, newJwtExpiry} from '@shared/jwt'
+import {newRefreshExpiry, setCookie} from '@shared/cookies'
+import {request} from '@shared/request'
+import {v4 as uuidv4} from 'uuid'
+import {AccountData, RequestExtended, Session, UserData} from '@shared/types'
 
 interface HasuraData {
   auth_refresh_tokens: { account: AccountData }[]
@@ -27,8 +27,6 @@ async function refreshToken({ refresh_token }: RequestExtended, res: Response): 
   if (!auth_refresh_tokens?.length) {
     throw Boom.unauthorized('Invalid or expired refresh token.')
   }
-
-  console.log(auth_refresh_tokens)
 
   // create a new refresh token
   const new_refresh_token = uuidv4()
@@ -55,11 +53,10 @@ async function refreshToken({ refresh_token }: RequestExtended, res: Response): 
   const jwt_expires_in = newJwtExpiry
   const user: UserData = {
     id: account.user.id,
-    name: account.user.name,
     email: account.email,
-    avatar_url: account.user.avatar_url
   }
   const session: Session = { jwt_token, jwt_expires_in, user }
+
   if (refresh_token.type === 'cookie') {
     setCookie(res, new_refresh_token, permission_variables)
   } else {

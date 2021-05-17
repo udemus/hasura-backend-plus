@@ -1,16 +1,16 @@
-import { AUTHENTICATION, APPLICATION, REGISTRATION } from '@shared/config'
-import { Request, Response } from 'express'
-import { asyncWrapper, checkHibp, hashPassword, selectAccount } from '@shared/helpers'
-import { newJwtExpiry, createHasuraJwt } from '@shared/jwt'
+import {APPLICATION, AUTHENTICATION, REGISTRATION} from '@shared/config'
+import {Request, Response} from 'express'
+import {asyncWrapper, checkHibp, hashPassword, selectAccount} from '@shared/helpers'
+import {createHasuraJwt, newJwtExpiry} from '@shared/jwt'
 
 import Boom from '@hapi/boom'
-import { emailClient } from '@shared/email'
-import { insertAccount } from '@shared/queries'
-import { setRefreshToken } from '@shared/cookies'
-import { registerSchema } from '@shared/validation'
-import { request } from '@shared/request'
-import { v4 as uuidv4 } from 'uuid'
-import { InsertAccountData, UserData, Session } from '@shared/types'
+import {emailClient} from '@shared/email'
+import {insertAccount} from '@shared/queries'
+import {setRefreshToken} from '@shared/cookies'
+import {registerSchema} from '@shared/validation'
+import {request} from '@shared/request'
+import {v4 as uuidv4} from 'uuid'
+import {InsertAccountData, Session, UserData} from '@shared/types'
 
 async function registerAccount({ body }: Request, res: Response): Promise<unknown> {
   const useCookie = typeof body.cookie !== 'undefined' ? body.cookie : true
@@ -63,7 +63,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
           data: accountRoles
         },
         user: {
-          data: { name: email, email, ...user_data }
+          data: user_data
         }
       }
     })
@@ -76,9 +76,7 @@ async function registerAccount({ body }: Request, res: Response): Promise<unknow
   const account = accounts.insert_auth_accounts.returning[0]
   const user: UserData = {
     id: account.user.id,
-    name: account.user.name,
     email: account.email,
-    avatar_url: account.user.avatar_url
   }
 
   if (!REGISTRATION.AUTO_ACTIVATE_NEW_USERS && AUTHENTICATION.VERIFY_EMAILS) {

@@ -68,7 +68,6 @@ const googleOneTap = async (req: Request, res: Response): Promise<void> => {
   //   throw Boom.unauthorized('Invalid or expired refresh token.')
   // }
   //
-  // console.log(auth_refresh_tokens)
   //
   // // create a new refresh token
   // const new_refresh_token = uuidv4()
