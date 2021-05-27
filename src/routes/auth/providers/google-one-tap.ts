@@ -37,18 +37,24 @@ const googleOneTap = async (req: Request, res: Response): Promise<void> => {
 
   const payload = ticket.getPayload()
 
+  console.log(payload)
 
   const account = (await manageProviderStrategy('google', transformProfile as any)(req, '', '', payload as any, (err: any, user: any) => {
     return user;
   })) as unknown as AccountData
 
+  console.log(account)
+
   // COPY: login
   const refresh_token = await setRefreshToken(res, account.id, useCookie)
+
+  console.log(refresh_token)
 
   const jwt_token = createHasuraJwt(account)
   const jwt_expires_in = newJwtExpiry
 
   const session: Session = { jwt_token, jwt_expires_in, user: account.user }
+  console.log(session)
   if (!useCookie) session.refresh_token = refresh_token
 
   res.send(session)

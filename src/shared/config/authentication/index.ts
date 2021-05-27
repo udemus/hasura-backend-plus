@@ -1,4 +1,4 @@
-import { castBooleanEnv } from '../utils'
+import {castBooleanEnv} from '../utils'
 
 export * from './registration'
 export * from './jwt'
@@ -11,7 +11,7 @@ export * from './cookies'
  */
 export const AUTHENTICATION = {
   get ENABLE() {
-    return castBooleanEnv('AUTH_ENABLE', true)
+    return castBooleanEnv('AUTH_ENABLE', false)
   },
   get AUTH_LOCAL_USERS_ENABLE() {
     return castBooleanEnv('AUTH_LOCAL_USERS_ENABLE', true)
