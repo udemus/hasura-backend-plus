@@ -10,7 +10,6 @@ import providers from './providers'
 import registerAccount from './register'
 import token from './token'
 import activateAccount from './activate'
-import deleteAccount from './delete'
 import magicLink from './magic-link'
 import {AUTHENTICATION} from '@shared/config'
 
@@ -22,6 +21,7 @@ router.use(nocache())
 router.get('/jwks', getJwks)
 router.use('/token', token)
 router.use('/providers', providers)
+router.post('/logout', logout)
 
 router.use((req, res, next) => {
   if (!AUTHENTICATION.ENABLE) {
@@ -31,15 +31,15 @@ router.use((req, res, next) => {
   }
 })
 
-router.use('/mfa', mfa)
 router.use('/change-email', changeEmail)
 router.get('/activate', activateAccount)
-router.post('/delete', deleteAccount)
+
+router.get('/magic-link', magicLink)
+router.use('/mfa', mfa)
+
 router
   .post('/login', loginAccount)
-  .post('/logout', logout)
   .post('/register', registerAccount)
   .use('/change-password', changePassword)
-router.get('/magic-link', magicLink)
 
 export default router

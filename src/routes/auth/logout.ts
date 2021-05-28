@@ -1,13 +1,9 @@
-import { Response } from 'express'
-import { asyncWrapper } from '@shared/helpers'
-import { request } from '@shared/request'
-import {
-  selectRefreshToken,
-  deleteAllAccountRefreshTokens,
-  deleteRefreshToken
-} from '@shared/queries'
-import { logoutSchema } from '@shared/validation'
-import { AccountData, RequestExtended } from '@shared/types'
+import {Response} from 'express'
+import {asyncWrapper} from '@shared/helpers'
+import {request} from '@shared/request'
+import {deleteAllAccountRefreshTokens, deleteRefreshToken, selectRefreshToken} from '@shared/queries'
+import {logoutSchema} from '@shared/validation'
+import {AccountData, RequestExtended} from '@shared/types'
 
 interface HasuraData {
   auth_refresh_tokens: { account: AccountData }[]
