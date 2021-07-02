@@ -1,4 +1,4 @@
-import { REGISTRATION } from './config'
+import {REGISTRATION} from './config'
 import Joi from '@hapi/joi'
 
 interface ExtendedStringSchema extends Joi.StringSchema {
