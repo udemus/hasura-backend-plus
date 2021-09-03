@@ -43,8 +43,8 @@ const hasuraConsole = async (action: string): Promise<void> => {
       process.stdout.write(data.toString())
     }
   } catch (error) {
-    console.log('Error in starting hasura cli')
-    console.log(error)
+    console.info('Error in starting hasura cli')
+    console.info(error)
   }
 }
 
@@ -57,7 +57,7 @@ export default async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   { migrations, metadata }: Migration = { migrations: './migrations', metadata: './metadata' }
 ): Promise<void> => {
-  console.log('Checking migrations and metadata...')
+  console.info('Checking migrations and metadata...')
   await new Promise<void>((resolve, reject) => {
     const app = express()
     app.use(helmet())
@@ -86,18 +86,18 @@ export default async (
         )
         if (migrations && (await pathExists(migrations))) {
           // * Apply migrations
-          console.log(`Applying migrations '${migrations}'...`)
+          console.info(`Applying migrations '${migrations}'...`)
           await copy(migrations, `${TEMP_MIGRATION_DIR}/migrations`)
           await hasuraConsole('migrate apply')
         }
         // * Metadata is used in config v2. HBP uses config v1 so far
         // if (metadata && (await pathExists(metadata))) {
         //   // * Apply metadata
-        //   console.log(`Applying metadata '${metadata}'...`)
+        //   console.info(`Applying metadata '${metadata}'...`)
         //   await copy(metadata, `${TEMP_MIGRATION_DIR}/metadata`)
         //   await hasuraConsole('metadata apply')
         // } else if (migrations && (await pathExists(migrations))) {
-        console.log('Reloading metadata...')
+        console.info('Reloading metadata...')
         await hasuraConsole('metadata reload')
         // }
         await remove(TEMP_MIGRATION_DIR)

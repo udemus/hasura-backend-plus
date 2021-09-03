@@ -12,9 +12,9 @@ const start = async (): Promise<void> => {
   }
   app.listen(APPLICATION.PORT, APPLICATION.HOST, () => {
     if (APPLICATION.HOST) {
-      console.log(`Running on http://${APPLICATION.HOST}:${APPLICATION.PORT}`)
+      console.info(`Running on http://${APPLICATION.HOST}:${APPLICATION.PORT}`)
     } else {
-      console.log(`Running on port ${APPLICATION.PORT}`)
+      console.info(`Running on port ${APPLICATION.PORT}`)
     }
   })
 }
