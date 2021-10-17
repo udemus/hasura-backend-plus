@@ -17,6 +17,7 @@ import {
   UserData
 } from '@shared/types'
 import {setRefreshToken} from '@shared/cookies'
+import {ADMIN_EMAILS} from "@shared/config/authentication/roles.config";
 
 interface Constructable<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +85,12 @@ export const manageProviderStrategy = (
       // noop continue to register user
     }
 
+  const accountRoles = REGISTRATION.DEFAULT_ALLOWED_USER_ROLES.map((role) => ({ role }))
+
+  if (ADMIN_EMAILS.includes(email)) {
+    accountRoles.push({ role: 'admin' })
+  }
+
   // register useruser, account, account_provider
   const account_data = {
     email,
@@ -91,7 +98,7 @@ export const manageProviderStrategy = (
     active: true,
     default_role: REGISTRATION.DEFAULT_USER_ROLE,
     account_roles: {
-      data: REGISTRATION.DEFAULT_ALLOWED_USER_ROLES.map((role) => ({ role }))
+      data: accountRoles
     },
     user: { data: { name, avatar_url, username: nanoid(10) } },
     account_providers: {

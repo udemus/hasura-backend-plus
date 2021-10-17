@@ -10,6 +10,7 @@ import {registerSchema, registerSchemaMagicLink} from '@shared/validation'
 import {request} from '@shared/request'
 import {v4 as uuidv4} from 'uuid'
 import {InsertAccountData, Session, UserData} from '@shared/types'
+import {ADMIN_EMAILS} from "@shared/config/authentication/roles.config";
 
 async function registerAccount(req: Request, res: Response): Promise<unknown> {
   const body = req.body
@@ -60,6 +61,10 @@ async function registerAccount(req: Request, res: Response): Promise<unknown> {
   }
 
   const accountRoles = allowedRoles.map((role: string) => ({ role }))
+
+  if (ADMIN_EMAILS.includes(email)) {
+    accountRoles.push({ role: 'admin' })
+  }
 
   let accounts: InsertAccountData
   try {
