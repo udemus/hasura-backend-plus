@@ -23,7 +23,7 @@ async function disableMfa(req: RequestExtended, res: Response): Promise<unknown>
     otp_secret = account.otp_secret
     mfa_enabled = account.mfa_enabled
   } catch (err) {
-    return res.boom.badRequest(err.message)
+    return res.boom.badRequest((err as Error).message)
   }
 
   if (!mfa_enabled) {

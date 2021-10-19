@@ -37,13 +37,13 @@ async function registerAccount(req: Request, res: Response): Promise<unknown> {
     try {
       await checkHibp(password)
     } catch (err) {
-      return res.boom.badRequest(err.message)
+      return res.boom.badRequest((err as Error).message)
     }
 
     try {
       password_hash = await hashPassword(password)
     } catch (err) {
-      return res.boom.internal(err.message)
+      return res.boom.internal((err as Error).message)
     }
   }
 

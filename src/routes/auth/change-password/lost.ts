@@ -30,7 +30,7 @@ async function requestChangePassword({ body }: Request, res: Response): Promise<
   try {
     account = await selectAccountByEmail(email)
   } catch(err) {
-    return res.boom.badRequest(err.message)
+    return res.boom.badRequest((err as Error).message)
   }
 
   if (!account) {

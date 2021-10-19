@@ -22,14 +22,14 @@ async function resetPassword(req: RequestExtended, res: Response): Promise<unkno
   try {
     await checkHibp(new_password)
   } catch (err) {
-    return res.boom.badRequest(err.message)
+    return res.boom.badRequest((err as Error).message)
   }
 
   let password_hash: string
   try {
     password_hash = await hashPassword(new_password)
   } catch (err) {
-    return res.boom.internal(err.message)
+    return res.boom.internal((err as Error).message)
   }
 
   const hasuraData = await request<UpdateAccountData>(updatePasswordWithTicket, {

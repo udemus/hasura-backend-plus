@@ -26,7 +26,7 @@ async function changeEmail({ body }: Request, res: Response): Promise<unknown> {
     new_email = account.new_email
     user = account.user
   } catch(err) {
-    return res.boom.badRequest(err.message);
+    return res.boom.badRequest((err as Error).message);
   }
 
   const hasuraData = await request<UpdateAccountData>(changeEmailByTicket, {

@@ -22,7 +22,7 @@ async function basicPasswordChange(req: RequestExtended, res: Response): Promise
   try {
     await checkHibp(new_password)
   } catch (err) {
-    return res.boom.badRequest(err.message)
+    return res.boom.badRequest((err as Error).message)
   }
 
   // Search the account from the JWT's account id
@@ -31,7 +31,7 @@ async function basicPasswordChange(req: RequestExtended, res: Response): Promise
     const account = await selectAccountByUserId(user_id)
     password_hash = account.password_hash
   } catch (err) {
-    return res.boom.badRequest(err.message)
+    return res.boom.badRequest((err as Error).message)
   }
 
   // Check the old (current) password
@@ -43,7 +43,7 @@ async function basicPasswordChange(req: RequestExtended, res: Response): Promise
   try {
     newPasswordHash = await hashPassword(new_password)
   } catch (err) {
-    return res.boom.internal(err.message)
+    return res.boom.internal((err as Error).message)
   }
 
   await request(updatePasswordWithUserId, {

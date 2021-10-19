@@ -25,7 +25,7 @@ async function generateMfa(req: RequestExtended, res: Response): Promise<unknown
   try {
     image_url = await createQR(otpAuth)
   } catch(err) {
-    return res.boom.internal(err.message)
+    return res.boom.internal((err as Error).message)
   }
 
   return res.send({ image_url, otp_secret })

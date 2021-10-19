@@ -10,7 +10,7 @@ const getJwks = async (_req: RequestExtended, res: Response) => {
   try {
     jwks = getJwkStore().toJWKS(false)
   } catch (err) {
-    return res.boom.notImplemented(err.message)
+    return res.boom.notImplemented((err as Error).message)
   }
 
   return res.send(jwks)
