@@ -1,10 +1,4 @@
-import { castIntEnv, castBooleanEnv } from './utils'
-
-const autoMigrateSettings = (envVal?: string): boolean | string => {
-  if (envVal?.toLowerCase() === 'true') return true
-  if (envVal?.toLowerCase() === 'v1') return 'v1'
-  return false
-}
+import { castIntEnv, returnBooleanEnvVar } from "./utils";
 
 /**
  * * Application Settings
@@ -23,6 +17,7 @@ export const APPLICATION = {
     return process.env.HASURA_GRAPHQL_ADMIN_SECRET || ''
   },
   get HASURA_ENDPOINT() {
+    console.log(process.env.HASURA_ENDPOINT);
     return process.env.HASURA_ENDPOINT || ''
   },
 
@@ -49,17 +44,13 @@ export const APPLICATION = {
     return process.env.SMTP_AUTH_METHOD || 'PLAIN'
   },
   get EMAILS_ENABLE() {
-    return castBooleanEnv('EMAILS_ENABLE')
+    return returnBooleanEnvVar(['EMAILS_ENABLE', 'EMAILS_ENABLED'], false)
   },
   get SMTP_PORT() {
     return castIntEnv('SMTP_PORT', 587)
   },
   get SMTP_SECURE() {
-    return castBooleanEnv('SMTP_SECURE') // note: false disables SSL (deprecated)
-  },
-
-  get AUTO_MIGRATE() {
-    return autoMigrateSettings(process.env.AUTO_MIGRATE)
+    return returnBooleanEnvVar(['SMTP_SECURE'], true) // note: false disables SSL (deprecated)
   },
 
   get MAX_REQUESTS() {
@@ -67,5 +58,5 @@ export const APPLICATION = {
   },
   get TIME_FRAME() {
     return castIntEnv('TIME_FRAME', 15 * 60 * 1000)
-  },
+  }
 }
