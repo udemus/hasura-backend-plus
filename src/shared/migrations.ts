@@ -1,9 +1,10 @@
-import { migrate } from 'postgres-migrations'
-import { Client } from 'pg'
+import { migrate } from "postgres-migrations";
+import { Client } from "pg";
 
 export async function applyMigrations(): Promise<void> {
   console.log('Applying migrations')
 
+  console.log(process.env.DATABASE_URL);
   const dbConfig = {
     connectionString: process.env.DATABASE_URL
   }

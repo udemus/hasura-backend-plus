@@ -1,17 +1,17 @@
-import {Router} from 'express'
-import nocache from 'nocache'
-import changeEmail from './change-email'
-import getJwks from './jwks'
-import loginAccount from './login'
-import logout from './logout'
-import mfa from './mfa'
-import changePassword from './change-password'
-import providers from './providers'
-import registerAccount from './register'
-import token from './token'
-import activateAccount from './activate'
-import magicLink from './magic-link'
-import {AUTHENTICATION} from '@shared/config'
+import { Router } from "express";
+import nocache from "nocache";
+import changeEmail from "./change-email";
+import getJwks from "./jwks";
+import loginAccount from "./login";
+import logout from "./logout";
+import mfa from "./mfa";
+import changePassword from "./change-password";
+import providers from "./providers";
+import registerAccount from "./register";
+import token from "./token";
+import activateAccount from "./activate";
+import magicLink from "./magic-link";
+import { AUTHENTICATION } from "@shared/config";
 
 const router = Router()
 

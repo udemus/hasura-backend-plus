@@ -1,4 +1,4 @@
-import { castIntEnv, returnBooleanEnvVar } from './utils'
+import { castIntEnv, returnBooleanEnvVar } from "./utils";
 
 /**
  * * Application Settings
@@ -17,6 +17,7 @@ export const APPLICATION = {
     return process.env.HASURA_GRAPHQL_ADMIN_SECRET || ''
   },
   get HASURA_ENDPOINT() {
+    console.log(process.env.HASURA_ENDPOINT);
     return process.env.HASURA_ENDPOINT || ''
   },
 
