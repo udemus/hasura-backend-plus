@@ -7,7 +7,6 @@ const envFile =
     ? `.env.${process.env.NODE_ENV}`
     : '.env'
 
-console.log(envFile);
 dotenv.config({ path: envFile })
 
 export * from './application'
