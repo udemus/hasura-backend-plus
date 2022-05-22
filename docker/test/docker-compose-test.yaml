@@ -18,7 +18,7 @@ services:
       - '8080:8080'
     environment:
       HASURA_GRAPHQL_DATABASE_URL: >-
-        postgres://postgres:pgpassword@postgres:5432/postgres
+        postgres://postgres:pgpassword@postgres:5433/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
       HASURA_GRAPHQL_ADMIN_SECRET: hello123
       HASURA_GRAPHQL_JWT_SECRET: >-
@@ -44,7 +44,7 @@ services:
       HOST: 0.0.0.0
       PORT: 4000
       DATABASE_URL: >-
-        postgres://postgres:pgpassword@postgres:5432/postgres
+        postgres://postgres:pgpassword@postgres:5433/postgres
       SERVER_URL: 'http://localhost:4000'
       HASURA_ENDPOINT: 'http://graphql-engine:8080/v1/graphql'
       HASURA_GRAPHQL_ADMIN_SECRET: hello123
